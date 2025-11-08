@@ -1,0 +1,95 @@
+{
+  "week": 4,
+  "matchup": {
+    "home": "Cardinals",
+    "away": "Seahawks",
+    "date": "2025-09-25",
+    "timeET": "20:15",
+    "venue": "State Farm Stadium, Glendale, AZ",
+    "network": "Prime Video"
+  },
+  "prediction": {
+    "halftime": "SEA 13, ARI 10",
+    "final": "SEA 23, ARI 17",
+    "script": "Tight defensive first half, opens up in 2H with explosive plays and a late turnover."
+  },
+  "dfs": {
+    "captainPicks": [
+      {
+        "player": "Trey McBride",
+        "team": "ARI",
+        "position": "TE",
+        "reason": "Seattle ranks bottom-5 vs TEs; McBride leads ARI in targets and red-zone usage.",
+        "bioBoost": "Jungle Trap Zone unlocked — Seattle can’t cover tight ends if their lives depended on it."
+      },
+      {
+        "player": "Jaxon Smith-Njigba",
+        "team": "SEA",
+        "position": "WR",
+        "reason": "38% target share, facing a depleted secondary.",
+        "bioBoost": "Banana Supply Chain Index: Overflowing. Expect JSN to feast."
+      },
+      {
+        "player": "Kenneth Walker III",
+        "team": "SEA",
+        "position": "RB",
+        "reason": "3 TDs in 3 games, elite red-zone usage.",
+        "bioBoost": "K9 off the leash — expect at least one end-zone sniff."
+      }
+    ],
+    "valuePicks": [
+      { "player": "Trey Benson", "team": "ARI", "position": "RB" },
+      { "player": "Marvin Harrison Jr.", "team": "ARI", "position": "WR" },
+      { "player": "Zach Charbonnet", "team": "SEA", "position": "RB" },
+      { "player": "Seattle DST", "team": "SEA", "position": "DST" }
+    ]
+  },
+  "props": {
+    "passing": [
+      {
+        "player": "Sam Darnold",
+        "team": "SEA",
+        "line": "223.5",
+        "type": "yards",
+        "lean": "Over"
+      },
+      {
+        "player": "Kyler Murray",
+        "team": "ARI",
+        "type": "anytimeTD",
+        "odds": "+200"
+      }
+    ],
+    "rushing": [
+      {
+        "player": "Kenneth Walker III",
+        "team": "SEA",
+        "type": "anytimeTD",
+        "odds": "-110"
+      },
+      {
+        "player": "Trey Benson",
+        "team": "ARI",
+        "line": "49.5",
+        "type": "yards",
+        "lean": "Under"
+      }
+    ],
+    "receiving": [
+      {
+        "player": "Trey McBride",
+        "team": "ARI",
+        "line": "5.5",
+        "type": "receptions",
+        "lean": "Over"
+      },
+      {
+        "player": "Jaxon Smith-Njigba",
+        "team": "SEA",
+        "line": "74.5",
+        "type": "yards",
+        "lean": "Over"
+      }
+    ]
+  }
+}

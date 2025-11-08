@@ -1,0 +1,22 @@
+# This file specifies files and directories to ignore when building the Docker image.
+node_modules
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.git
+.gitignore
+.env
+*.ts
+*.spec.ts
+*.test.ts
+*.log
+coverage
+dist
+build
+.vscode
+.idea
+*.local
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local

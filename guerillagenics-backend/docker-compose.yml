@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/guerillagenics
+      - GG_API_KEY=${GG_API_KEY}
+    depends_on:
+      - mongo
+    networks:
+      - guerillagenics-network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - guerillagenics-network
+
+networks:
+  guerillagenics-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

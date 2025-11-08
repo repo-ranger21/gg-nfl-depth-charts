@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: GuerillaGenics Automation API
+  description: API for managing automation processes in GuerillaGenics.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /automation/decision:
+    post:
+      summary: Make a decision based on input data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionInput'
+      responses:
+        '200':
+          description: Decision made successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionOutput'
+        '400':
+          description: Invalid input data
+        '401':
+          description: Unauthorized
+  /automation/kpi:
+    post:
+      summary: Update KPI values
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KPIUpdateInput'
+      responses:
+        '200':
+          description: KPI updated successfully
+        '400':
+          description: Invalid input data
+        '401':
+          description: Unauthorized
+  /automation/rollout:
+    post:
+      summary: Create a rollout plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolloutPlanInput'
+      responses:
+        '201':
+          description: Rollout plan created successfully
+        '400':
+          description: Invalid input data
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    DecisionInput:
+      type: object
+      properties:
+        inputData:
+          type: string
+          description: The data used for making a decision
+      required:
+        - inputData
+    DecisionOutput:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The result of the decision-making process
+    KPIUpdateInput:
+      type: object
+      properties:
+        kpiId:
+          type: string
+          description: The ID of the KPI to update
+        value:
+          type: number
+          description: The new value for the KPI
+      required:
+        - kpiId
+        - value
+    RolloutPlanInput:
+      type: object
+      properties:
+        planName:
+          type: string
+          description: The name of the rollout plan
+        details:
+          type: string
+          description: Detailed description of the rollout plan
+      required:
+        - planName
+        - details
