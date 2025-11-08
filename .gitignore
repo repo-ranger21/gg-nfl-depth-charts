@@ -6,3 +6,11 @@ vite.config.ts.*
 *.tar.gz
 # ignore local env files with secrets
 nano.env
+# NFL roster sync artifacts
+logs/
+nfl_full_roster.csv
+roster_verification_report.md
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
