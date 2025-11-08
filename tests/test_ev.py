@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """Tests for EV calculation module."""
 
 import pytest
@@ -20,16 +19,16 @@ class TestEVCalculations:
         """Test EV calculation for positive expected value."""
         result = calculate_ev(pick_odds=2.0, win_probability=0.6, stake=100)
         
-        assert result['ev'] == 20.0  # (0.6 * 2.0 * 100) - 100
-        assert result['ev_percentage'] == 20.0
-        assert result['expected_return'] == 120.0
+        assert result['ev'] == pytest.approx(20.0)  # (0.6 * 2.0 * 100) - 100
+        assert result['ev_percentage'] == pytest.approx(20.0)
+        assert result['expected_return'] == pytest.approx(120.0)
     
     def test_calculate_ev_negative(self):
         """Test EV calculation for negative expected value."""
         result = calculate_ev(pick_odds=1.5, win_probability=0.4, stake=100)
         
-        assert result['ev'] == -40.0  # (0.4 * 1.5 * 100) - 100
-        assert result['ev_percentage'] == -40.0
+        assert result['ev'] == pytest.approx(-40.0)  # (0.4 * 1.5 * 100) - 100
+        assert result['ev_percentage'] == pytest.approx(-40.0)
     
     def test_calculate_win_probability_neutral(self):
         """Test win probability calculation for neutral game script."""
@@ -37,7 +36,7 @@ class TestEVCalculations:
         prob = calculate_win_probability(player_stats, "neutral")
         
         assert 0.0 <= prob <= 1.0
-        assert prob == 0.5  # Should equal base hit rate for neutral script
+        assert prob == pytest.approx(0.5)  # Should equal base hit rate for neutral script
     
     def test_calculate_win_probability_shootout(self):
         """Test win probability calculation for shootout game script."""
@@ -45,7 +44,7 @@ class TestEVCalculations:
         prob = calculate_win_probability(player_stats, "shootout")
         
         assert prob > 0.5  # Should be higher than neutral
-        assert prob == 0.575  # 0.5 * 1.15
+        assert prob == pytest.approx(0.575)  # 0.5 * 1.15
     
     def test_calculate_parlay_probability_independent(self):
         """Test parlay probability for independent events."""
@@ -53,7 +52,7 @@ class TestEVCalculations:
         result = calculate_parlay_probability(probabilities)
         
         expected = 0.6 * 0.5 * 0.7
-        assert result == expected
+        assert result == pytest.approx(expected)
     
     def test_evaluate_pick_ev_complete(self):
         """Test complete pick evaluation."""
@@ -68,7 +67,7 @@ class TestEVCalculations:
         assert 'ev_percentage' in result
         assert 'win_probability' in result
         assert 'value_rating' in result
-        assert result['win_probability'] == 0.6
+        assert result['win_probability'] == pytest.approx(0.6)
     
     def test_batch_ev_calculation(self):
         """Test batch EV calculation on DataFrame."""
@@ -114,25 +113,3 @@ def test_batch_calculation_with_sample_data(sample_picks_data):
     # Check that all EV calculations are reasonable
     assert all(result['ev_win_probability'] >= 0)
     assert all(result['ev_win_probability'] <= 1)
-=======
-import pytest
-from gorillagenics.ev import calculate_ev
-
-def test_calculate_ev_positive():
-    """Test EV calculation for positive expected value."""
-    result = calculate_ev(pick_odds=2.0, win_probability=0.6, stake=100)
-    assert result['ev'] == pytest.approx(20.0)
-    assert result['ev_percentage'] == pytest.approx(20.0)
-
-def test_calculate_ev_negative():
-    """Test EV calculation for negative expected value."""
-    result = calculate_ev(pick_odds=1.5, win_probability=0.4, stake=100)
-    assert result['ev'] == pytest.approx(-40.0)
-    assert result['ev_percentage'] == pytest.approx(-40.0)
-
-def test_calculate_ev_zero():
-    """Test EV calculation for break-even scenario."""
-    result = calculate_ev(pick_odds=2.0, win_probability=0.5, stake=100)
-    assert result['ev'] == pytest.approx(0.0)
-    assert result['ev_percentage'] == pytest.approx(0.0)
->>>>>>> 45a7c2d (Fix floating point precision issue in test_calculate_ev_negative using pytest.approx)
