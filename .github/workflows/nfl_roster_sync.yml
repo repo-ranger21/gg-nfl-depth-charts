@@ -8,6 +8,9 @@ on:
   # Allow manual dispatch for on-demand runs
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   sync-roster:
     runs-on: ubuntu-latest
