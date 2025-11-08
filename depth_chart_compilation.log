@@ -6,3 +6,35 @@
 2025-11-08 22:06:02,286 - INFO - Fetching http://example.com (attempt 2/3)
 2025-11-08 22:06:02,286 - WARNING - Attempt 2 failed for http://example.com: Error 2
 2025-11-08 22:06:02,286 - INFO - Fetching http://example.com (attempt 3/3)
+2025-11-08 22:13:36,801 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,801 - INFO - Output directory: example_output
+2025-11-08 22:13:36,801 - INFO - Max retries: 3
+2025-11-08 22:13:36,801 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,801 - INFO - Output directory: example_output
+2025-11-08 22:13:36,801 - INFO - Max retries: 3
+2025-11-08 22:13:36,801 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,801 - INFO - Output directory: custom_output
+2025-11-08 22:13:36,801 - INFO - Max retries: 5
+2025-11-08 22:13:36,801 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,801 - INFO - Output directory: example_output
+2025-11-08 22:13:36,802 - INFO - Max retries: 3
+2025-11-08 22:13:36,802 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,802 - INFO - Output directory: example_output
+2025-11-08 22:13:36,802 - INFO - Max retries: 3
+2025-11-08 22:13:36,802 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,802 - INFO - Output directory: /tmp/tmpjr_e4diy
+2025-11-08 22:13:36,802 - INFO - Max retries: 3
+2025-11-08 22:13:36,802 - INFO - Validating compiled data...
+2025-11-08 22:13:36,802 - INFO - Validation results:
+2025-11-08 22:13:36,802 - INFO -   Total players: 100
+2025-11-08 22:13:36,802 - INFO -   Unique players: 100
+2025-11-08 22:13:36,802 - INFO -   Expected total: 2553
+2025-11-08 22:13:36,803 - INFO -   Meets expectation: False
+2025-11-08 22:13:36,803 - WARNING - Warnings: 1
+2025-11-08 22:13:36,803 - WARNING -   - Team KC has 100 players (expected at most 90)
+2025-11-08 22:13:36,803 - ERROR - Errors: 2
+2025-11-08 22:13:36,803 - ERROR -   - Total player count (100) is significantly below expected (2553)
+2025-11-08 22:13:36,803 - ERROR -   - Missing teams: ARI, ATL, BAL, BUF, CAR, CHI, CIN, CLE, DAL, DEN, DET, GB, HOU, IND, JAX, KC, LAC, LAR, LV, MIA, MIN, NE, NO, NYG, NYJ, PHI, PIT, SEA, SF, TB, TEN, WAS
+2025-11-08 22:13:36,803 - INFO - NFL Depth Chart Compiler initialized
+2025-11-08 22:13:36,803 - INFO - Output directory: example_output
+2025-11-08 22:13:36,803 - INFO - Max retries: 3
