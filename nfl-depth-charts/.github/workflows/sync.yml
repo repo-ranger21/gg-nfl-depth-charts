@@ -1,0 +1,36 @@
+name: NFL Depth Chart Sync
+
+on:
+  schedule:
+    - cron: '0 14 * * 2'  # Tuesday 9 AM EST (UTC 14)
+  workflow_dispatch: {}
+
+jobs:
+  sync-depth-charts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      - name: Run depth chart scraper
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: |
+          python scripts/nfl_depth_scraper.py
+
+      - name: Upload summary
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: sync-results-${{ github.run_number }}
+          path: sync-log.txt
