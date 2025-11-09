@@ -134,4 +134,6 @@ def test_calculate_ev_zero():
     result = calculate_ev(pick_odds=2.0, win_probability=0.5, stake=100)
     assert result['ev'] == pytest.approx(0.0)
     assert result['ev_percentage'] == pytest.approx(0.0)
+
+# ci-rerun: noop
 """
