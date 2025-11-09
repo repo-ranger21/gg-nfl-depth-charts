@@ -1,0 +1,135 @@
+name: NFL Roster Sync
+
+on:
+  # Schedule: Daily at 02:00 UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Allow manual dispatch for on-demand runs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync-roster:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Setup Python >= 3.10
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # Create logs directory
+      - name: Create logs directory
+        run: mkdir -p logs
+      
+      # Run NFL roster builder with retry logic (3 attempts, 10s backoff)
+      - name: Run NFL Roster Builder
+        id: roster_builder
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          max_attempts=3
+          attempt=1
+          success=false
+          
+          while [ $attempt -le $max_attempts ]; do
+            echo "🔄 Attempt $attempt of $max_attempts"
+            
+            if python nfl_roster_builder.py; then
+              echo "✅ NFL Roster Builder completed successfully"
+              success=true
+              break
+            else
+              echo "❌ Attempt $attempt failed"
+              
+              if [ $attempt -lt $max_attempts ]; then
+                echo "⏳ Waiting 10 seconds before retry..."
+                sleep 10
+              fi
+            fi
+            
+            attempt=$((attempt + 1))
+          done
+          
+          if [ "$success" = false ]; then
+            echo "❌ All attempts failed"
+            exit 1
+          fi
+      
+      # Generate verification report
+      - name: Generate Verification Report
+        run: |
+          echo "📊 Generating roster verification report..."
+          python verify_roster_report.py
+      
+      # Display console summary
+      - name: Display Summary
+        run: |
+          echo "================================"
+          echo "✅ NFL Roster Sync Summary"
+          echo "================================"
+          
+          if [ -f "nfl_full_roster.csv" ]; then
+            player_count=$(tail -n +2 nfl_full_roster.csv | wc -l)
+            echo "📊 Total Players: $player_count"
+          else
+            echo "⚠️  Roster CSV not found"
+          fi
+          
+          if [ -f "roster_verification_report.md" ]; then
+            echo "✅ Verification report generated"
+          else
+            echo "⚠️  Verification report not found"
+          fi
+          
+          if [ -f "logs/nfl_sync.log" ]; then
+            echo ""
+            echo "📋 Recent log entries:"
+            tail -n 20 logs/nfl_sync.log
+          fi
+          
+          echo "================================"
+          echo "✅ Total: Processing Metadata Validation 🖤DIRECT_STATS"
+          echo "================================"
+      
+      # Upload artifacts
+      - name: Upload Roster CSV
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nfl-full-roster
+          path: nfl_full_roster.csv
+          retention-days: 30
+      
+      - name: Upload Verification Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: roster-verification-report
+          path: roster_verification_report.md
+          retention-days: 30
+      
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sync-logs
+          path: logs/nfl_sync.log
+          retention-days: 30
