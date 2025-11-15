@@ -6,20 +6,30 @@ Validates the scraped roster data and generates a markdown report.
 import os
 import sys
 import logging
+from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from typing import Dict, List, Tuple
+from typing import Dict
 import pandas as pd
 
-# Setup logging
+# Setup logging with rotation to prevent unbounded log growth
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE = os.path.join(LOG_DIR, "nfl_sync.log")
+
+# Configure rotating file handler (max 10MB per file, keep 5 backup files)
+file_handler = RotatingFileHandler(
+    LOG_FILE, 
+    maxBytes=10*1024*1024,  # 10 MB
+    backupCount=5
+)
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(LOG_FILE, mode='a'),
+        file_handler,
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -111,9 +121,10 @@ def validate_roster_data(df: pd.DataFrame) -> Dict:
             validation_results["warnings"].append(f"{field} has {null_count} null values")
     
     # Check for duplicate players
-    duplicates = df[df.duplicated(subset=["team", "name"], keep=False)]
-    if not duplicates.empty:
-        validation_results["warnings"].append(f"Found {len(duplicates)} duplicate player entries")
+    dup_combos = df.groupby(["team", "name"]).size().reset_index(name="count")
+    dup_combos = dup_combos[dup_combos["count"] > 1]
+    if not dup_combos.empty:
+        validation_results["warnings"].append(f"Found {len(dup_combos)} players with duplicate team/name combinations")
     
     return validation_results
 

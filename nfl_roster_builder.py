@@ -7,6 +7,7 @@ import os
 import sys
 import time
 import logging
+from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from typing import List, Dict, Optional
 import requests
@@ -23,16 +24,25 @@ NOTION_DATABASE_ID = os.getenv("NOTION_DATABASE_ID")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-# Setup logging
+# Setup logging with rotation to prevent unbounded log growth
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE = os.path.join(LOG_DIR, "nfl_sync.log")
+
+# Configure rotating file handler (max 10MB per file, keep 5 backup files)
+file_handler = RotatingFileHandler(
+    LOG_FILE, 
+    maxBytes=10*1024*1024,  # 10 MB
+    backupCount=5
+)
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(LOG_FILE),
+        file_handler,
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -161,7 +171,7 @@ def scrape_all_teams() -> List[Dict]:
         time.sleep(1.5)
     
     logger.info(f"\n{'='*60}")
-    logger.info(f"✅ Total: Processing Metadata Validation 🖤DIRECT_STATS")
+    logger.info(f"✅ Total: Validating collected player metadata")
     logger.info(f"✅ Successfully scraped: {successful_teams} teams")
     logger.info(f"❌ Failed: {failed_teams} teams")
     logger.info(f"📊 Total players collected: {len(all_players)}")
